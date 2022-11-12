@@ -2,28 +2,29 @@ package food_api;
 import java.sql.*; 
 
 public class DB_conn {
-	public static void main(String args[]){  
+	public ResultSet connection(String arg){  
+		
 		try{  
 			Class.forName("com.mysql.cj.jdbc.Driver");  
 			Connection con=DriverManager.getConnection(  
 					"jdbc:mysql://localhost/sample","root","Arul@210");  
-			System.out.println("Inside");
-			Statement stmt=con.createStatement();  
-			ResultSet rs=stmt.executeQuery("select * from intolerances;");
-			//System.out.println(rs.next());
-			while(rs.next())  
-				System.out.println("hello");
-			con.close();  
+			System.out.println(arg);
+			Statement stmt=con.createStatement(); 
+			if(arg.contains("select")) {
+				ResultSet rs= stmt.executeQuery(arg); 
+				return rs;
+			}
+			else {
+				stmt.executeUpdate(arg);
+				con.close();
+				return null;
+			}  
 		}
 		catch(Exception e){ 
 			System.out.println(e);
-		}  
+			return null;
+		}
 	} 
-	/*public static void main(String args[]) throws SQLException {
-		ResultSet rs=conn();
-		while(rs.next())  
-			System.out.println(rs.getString("SYMBOL"));
-	}*/
 }  
 
 
